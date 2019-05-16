@@ -10,6 +10,7 @@
 <title>Insert title here</title>
 </head>
 <body>
+	<%@ include file="/common/header.jsp"%>
 	<h1>新規会員登録</h1>
 	<form action="/mywebbook/members/new" method="post">
 		<table>
@@ -35,7 +36,8 @@
 			</tr>
 			<tr>
 				<td>メールアドレス</td>
-				<td><input name="email" type="email" value="hoge@hoge.com" required /></td>
+				<td><input name="email" type="email" value="hoge@hoge.com"
+					required /></td>
 			</tr>
 			<tr>
 				<td>生年月日</td>

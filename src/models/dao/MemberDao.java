@@ -149,8 +149,7 @@ public class MemberDao {
 		String bd = request.getParameter("birthdayDay");
 		String dateStr = by + "-" + bm + "-" + bd;
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		Date birthday;
-		birthday = sdf.parse(dateStr);
+		Date birthday = sdf.parse(dateStr);
 		member.setBirthday(birthday);
 		return member;
 	}

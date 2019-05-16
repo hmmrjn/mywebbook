@@ -9,9 +9,10 @@
 <title>会員一覧</title>
 </head>
 <body>
+	<%@ include file="/common/header.jsp"%>
 	<h1>会員一覧</h1>
 	<a href="/mywebbook/members/new">新規会員</a>
-	<table>
+	<table border="1">
 		<tr>
 			<th>ID</th>
 			<th>氏名</th>
@@ -22,7 +23,7 @@
 			<th>誕生日</th>
 			<th>入会日</th>
 			<th>退会日</th>
-			<th>操作</th>
+			<th colspan="2">操作</th>
 		</tr>
 		<c:forEach items="${members}" var="member">
 			<tr>

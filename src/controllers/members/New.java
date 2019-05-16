@@ -1,4 +1,4 @@
-package controller.members;
+package controllers.members;
 
 import java.io.IOException;
 import java.sql.SQLException;

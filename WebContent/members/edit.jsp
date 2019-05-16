@@ -10,10 +10,8 @@
 <title>会員情報編集</title>
 </head>
 <body>
+	<%@ include file="/common/header.jsp"%>
 	<h1>会員情報編集</h1>
-
-	<div class="message">${message}</div>
-	${e}
 	<form action="/mywebbook/members/edit" method="post">
 		<table>
 			<tr>
@@ -97,8 +95,8 @@
 			</tr>
 
 		</table>
-		<input type="hidden" name="id" value="${member.id}" />
-		<input type="submit" value="更新" />
+		<input type="hidden" name="id" value="${member.id}" /> <input
+			type="submit" value="更新" />
 	</form>
 </body>
 </html>
