@@ -1,5 +1,6 @@
 package models.dao;
 
+import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -134,6 +135,11 @@ public class MemberDao {
 	}
 
 	public Member buildMember(HttpServletRequest request) throws ParseException {
+		try {
+			request.setCharacterEncoding("UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
 		Member member = new Member();
 		if (request.getParameter("id") != null) {
 			member.setId(Integer.parseInt(request.getParameter("id")));
