@@ -11,6 +11,22 @@ import models.bean.Rental;
 
 public class RentalDao extends Dao {
 
+	public List<Rental> findAll() {
+		String sql = "SELECT * FROM rental";
+		List<Rental> rentals = new ArrayList<Rental>();
+		try {
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				Rental rental = buildRental(rs);
+				rentals.add(rental);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return rentals;
+	}
+
 	public List<Rental> findNotReturned() {
 		String sql = "SELECT * FROM rental WHERE returned_at IS NULL";
 		List<Rental> rentals = new ArrayList<Rental>();

@@ -12,7 +12,6 @@ import controllers.Controller;
 import exceptions.BadParamsException;
 import models.logic.RentalLogic;
 
-// TODO rename rental to rentals/
 @WebServlet("/rentals/set_returned")
 public class RentalsReturn extends Controller {
 
