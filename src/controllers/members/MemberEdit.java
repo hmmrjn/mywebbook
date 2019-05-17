@@ -6,11 +6,11 @@ import java.text.ParseException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import controllers.Controller;
 import exceptions.NoResultException;
 import models.bean.Member;
 import models.dao.MemberDao;
@@ -19,7 +19,7 @@ import models.dao.MemberDao;
  * Servlet implementation class Edit
  */
 @WebServlet("/members/edit")
-public class Edit extends HttpServlet {
+public class MemberEdit extends Controller {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {

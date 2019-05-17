@@ -11,6 +11,7 @@ import models.bean.BookCopy;
 
 public class BookCopyDao {
 
+	// TODO connection 一元化
 	Connection con;
 
 	public BookCopyDao() {

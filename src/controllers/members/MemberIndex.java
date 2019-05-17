@@ -6,16 +6,16 @@ import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import controllers.Controller;
 import models.bean.Member;
 import models.dao.MemberDao;
 
 @WebServlet("/members")
-public class Index extends HttpServlet {
+public class MemberIndex extends Controller {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
