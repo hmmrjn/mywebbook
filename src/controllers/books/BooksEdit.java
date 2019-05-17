@@ -40,11 +40,17 @@ public class BooksEdit extends Controller {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		BookDao bookDao = new BookDao();
-		Book book = bookDao.buildBookWithoutCopies(request);
 		HttpSession session = request.getSession();
-		bookDao.update(book);
-		session.setAttribute("message", "図書を更新しました。");
-		response.sendRedirect("/mywebbook/books/show?isbn=" + book.getIsbn());
+		try {
+			Book book = bookDao.buildBookWithoutCopies(request);
+			bookDao.update(book);
+			session.setAttribute("message", "図書を更新しました。");
+			response.sendRedirect("/mywebbook/books/show?isbn=" + book.getIsbn());
+		} catch (NoResultException e) {
+			session.setAttribute("message", "不正なIDです。");
+			setCategoriesAndPublishers(request, response);
+			request.getRequestDispatcher("/books/edit.jsp").forward(request, response);
+		}
 	}
 
 }
