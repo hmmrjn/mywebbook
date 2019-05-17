@@ -1,7 +1,6 @@
 package controllers.books;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import controllers.Controller;
+import exceptions.NoResultException;
 import models.bean.Book;
 import models.dao.BookDao;
 
@@ -27,7 +27,7 @@ public class BooksShow extends Controller {
 			Book book = bookDao.findByIsbn(isbn);
 			request.setAttribute("book", book);
 			request.getRequestDispatcher("/books/show.jsp").forward(request, response);;
-		} catch (SQLException e) {
+		} catch (NoResultException e) {
 			e.printStackTrace();
 			HttpSession session = request.getSession();
 			session.setAttribute("message", "そんな図書はございません。");
