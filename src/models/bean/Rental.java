@@ -4,8 +4,8 @@ import java.util.Date;
 
 public class Rental {
 	private int id;
-	private int bookCopyId;
-	private int memberId;
+	private BookCopy bookCopy;
+	private Member member;
 	private Date rentedAt;
 	private Date returnBy;
 	private Date returnedAt;
@@ -18,20 +18,20 @@ public class Rental {
 		this.id = id;
 	}
 
-	public int getBookCopyId() {
-		return bookCopyId;
+	public BookCopy getBookCopy() {
+		return bookCopy;
 	}
 
-	public void setBookCopyId(int bookCopyId) {
-		this.bookCopyId = bookCopyId;
+	public void setBookCopy(BookCopy bookCopy) {
+		this.bookCopy = bookCopy;
 	}
 
-	public int getMemberId() {
-		return memberId;
+	public Member getMember() {
+		return member;
 	}
 
-	public void setMemberId(int memberId) {
-		this.memberId = memberId;
+	public void setMember(Member member) {
+		this.member = member;
 	}
 
 	public Date getRentedAt() {

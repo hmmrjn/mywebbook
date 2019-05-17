@@ -6,9 +6,9 @@ import java.util.List;
 public class Book implements Serializable {
 	private String isbn;
 	private String name;
-	private String category;
+	private Category category;
 	private String author;
-	private String publisher;
+	private Publisher publisher;
 	private List<BookCopy> copies;
 
 	public String getIsbn() {
@@ -27,11 +27,11 @@ public class Book implements Serializable {
 		this.name = name;
 	}
 
-	public String getCategory() {
+	public Category getCategory() {
 		return category;
 	}
 
-	public void setCategory(String category) {
+	public void setCategory(Category category) {
 		this.category = category;
 	}
 
@@ -43,11 +43,11 @@ public class Book implements Serializable {
 		this.author = author;
 	}
 
-	public String getPublisher() {
+	public Publisher getPublisher() {
 		return publisher;
 	}
 
-	public void setPublisher(String publisher) {
+	public void setPublisher(Publisher publisher) {
 		this.publisher = publisher;
 	}
 
