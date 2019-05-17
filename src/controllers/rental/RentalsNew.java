@@ -12,8 +12,8 @@ import javax.servlet.http.HttpSession;
 import exceptions.BadParamsException;
 import models.logic.RentalLogic;
 
-@WebServlet("/rental/new")
-public class RentalNew extends HttpServlet {
+@WebServlet("/rentals/new")
+public class RentalsNew extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {

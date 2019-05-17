@@ -13,8 +13,8 @@ import exceptions.BadParamsException;
 import models.logic.RentalLogic;
 
 // TODO rename rental to rentals/
-@WebServlet("/rental/set_returned")
-public class RentalReturn extends Controller {
+@WebServlet("/rentals/set_returned")
+public class RentalsReturn extends Controller {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
