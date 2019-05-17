@@ -12,8 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import exceptions.NoResultException;
 import models.bean.Book;
 import models.bean.BookCopy;
-
-// TODO SQLException to NoResultException
 public class BookDao extends Dao {
 
 	// TODO 速度面check

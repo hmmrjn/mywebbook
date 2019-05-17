@@ -12,7 +12,6 @@ import javax.servlet.http.HttpSession;
 import exceptions.BadParamsException;
 import models.logic.RentalLogic;
 
-// TODO 全サーブレットで共通の関数を用意するために。継承クラスを用意。
 @WebServlet("/rental/new")
 public class RentalNew extends HttpServlet {
 

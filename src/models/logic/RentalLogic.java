@@ -2,6 +2,7 @@ package models.logic;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import exceptions.BadParamsException;
 import exceptions.NoResultException;
@@ -42,19 +43,36 @@ public class RentalLogic {
 	}
 
 	/**
+	 * 問題がなければ返却を記録します。
+	 * @param bookCopyId
+	 * @throws BadParamsException
+	 */
+	public void setReturned(int bookCopyId) throws BadParamsException {
+		Rental rental;
+		try {
+			rental = rentalDao.findNotReturnedByBookCopyId(bookCopyId);
+			rental.setReturnedAt(new Date());
+			rentalDao.update(rental);
+		} catch (NoResultException e) {
+			throw new BadParamsException();
+		}
+
+	}
+
+	/**
 	 * その図書のコピーは今借りられているか?
 	 * @param bookCopyId
 	 * @return 借りられていればtrue
 	 * @throws BadParamsException
 	 */
 	private boolean rentedNow(int bookCopyId) {
-		try {
-			Rental rental = rentalDao.findByBookCopyId(bookCopyId);
-			return (rental.getReturnedAt() == null);
-		} catch (NoResultException e) {
-			return false;
+		List<Rental> rentals = rentalDao.findByBookCopyId(bookCopyId);
+		for (Rental rental : rentals) {
+			if (rental.getReturnedAt() == null) {
+				return true;
+			}
 		}
-
+		return false;
 	}
 
 }
