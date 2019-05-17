@@ -1,14 +1,11 @@
 package models.dao;
 
 import java.io.UnsupportedEncodingException;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -17,17 +14,12 @@ import models.bean.Book;
 import models.bean.BookCopy;
 
 // TODO SQLException to NoResultException
-public class BookDao {
-	Connection con;
-
-	public BookDao() {
-		con = getConnection();
-	}
+public class BookDao extends Dao {
 
 	// TODO 速度面check
 	public List<Book> findAll() throws SQLException {
 		String sql = "SELECT * FROM book_info";
-		PreparedStatement stmt = con.prepareStatement(sql);
+		PreparedStatement stmt = conn.prepareStatement(sql);
 		ResultSet rs = stmt.executeQuery();
 		List<Book> books = new ArrayList<Book>();
 		while (rs.next()) {
@@ -41,7 +33,7 @@ public class BookDao {
 
 	public Book findByIsbn(String isbn) throws SQLException {
 		String sql = "SELECT * FROM book_info WHERE isbn = ?";
-		PreparedStatement stmt = con.prepareStatement(sql);
+		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setString(1, isbn);
 		ResultSet rs = stmt.executeQuery();
 		if (rs.next()) {
@@ -54,7 +46,7 @@ public class BookDao {
 
 	public List<String> findCategories() throws SQLException {
 		String sql = "SELECT name FROM category ORDER BY id";
-		PreparedStatement stmt = con.prepareStatement(sql);
+		PreparedStatement stmt = conn.prepareStatement(sql);
 		ResultSet rs = stmt.executeQuery();
 		List<String> categories = new ArrayList<String>();
 		while (rs.next()) {
@@ -67,7 +59,7 @@ public class BookDao {
 
 	public List<String> findPublishers() throws SQLException {
 		String sql = "SELECT name FROM publisher ORDER BY id";
-		PreparedStatement stmt = con.prepareStatement(sql);
+		PreparedStatement stmt = conn.prepareStatement(sql);
 		ResultSet rs = stmt.executeQuery();
 		List<String> publishers = new ArrayList<String>();
 		while (rs.next()) {
@@ -80,7 +72,7 @@ public class BookDao {
 
 	public void create(Book book, int copiesNum) throws SQLException {
 		String sql = "INSERT INTO book_info (isbn, category_id, publisher_id, name, author) VALUES (?, ?, ?, ?, ?)";
-		PreparedStatement stmt = con.prepareStatement(sql);
+		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setString(1, book.getIsbn());
 		stmt.setInt(2, categoryIdByName(book.getCategory())); //TODO 効率悪くない?
 		stmt.setInt(3, publisherIdByName(book.getPublisher()));
@@ -95,7 +87,7 @@ public class BookDao {
 
 	public void update(Book book) throws SQLException {
 		String sql = "UPDATE book_info SET category_id = ?, publisher_id = ?, name = ?, author = ? WHERE isbn = ?";
-		PreparedStatement stmt = con.prepareStatement(sql);
+		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setInt(1, categoryIdByName(book.getCategory())); //TODO 効率悪くない?
 		stmt.setInt(2, publisherIdByName(book.getPublisher()));
 		stmt.setString(3, book.getName());
@@ -137,7 +129,7 @@ public class BookDao {
 
 	private List<BookCopy> findBookCopiesByIsbn(String isbn) throws SQLException {
 		String sql = "SELECT id FROM book_copy WHERE isbn = ?";
-		PreparedStatement stmt = con.prepareStatement(sql);
+		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setString(1, isbn);
 		ResultSet rs = stmt.executeQuery();
 		List<BookCopy> bookCopies = new ArrayList<BookCopy>();
@@ -156,7 +148,7 @@ public class BookDao {
 
 		String sql = "SELECT * from book_copy WHERE id = ?";
 		try {
-			PreparedStatement stmt = con.prepareStatement(sql);
+			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, id);
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
@@ -177,7 +169,7 @@ public class BookDao {
 
 	private int categoryIdByName(String categoryName) throws SQLException {
 		String sql = "SELECT id FROM category WHERE name = ?";
-		PreparedStatement stmt = con.prepareStatement(sql);
+		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setString(1, categoryName);
 		ResultSet rs = stmt.executeQuery();
 		if (rs.next()) {
@@ -193,7 +185,7 @@ public class BookDao {
 
 	private int publisherIdByName(String publisherName) throws SQLException {
 		String sql = "SELECT id FROM publisher WHERE name = ?";
-		PreparedStatement stmt = con.prepareStatement(sql);
+		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setString(1, publisherName);
 		ResultSet rs = stmt.executeQuery();
 		if (rs.next()) {
@@ -208,7 +200,7 @@ public class BookDao {
 
 	private String categoryNameById(int categoryId) throws SQLException {
 		String sql = "SELECT name FROM category WHERE id = ?";
-		PreparedStatement stmt = con.prepareStatement(sql);
+		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setInt(1, categoryId);
 		ResultSet rs = stmt.executeQuery();
 		rs.next();
@@ -220,7 +212,7 @@ public class BookDao {
 
 	private String publisherNameById(int publisherId) throws SQLException {
 		String sql = "SELECT name FROM publisher WHERE id = ?";
-		PreparedStatement stmt = con.prepareStatement(sql);
+		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setInt(1, publisherId);
 		ResultSet rs = stmt.executeQuery();
 		rs.next();
@@ -232,27 +224,10 @@ public class BookDao {
 
 	private void createCopy(String isbn) throws SQLException {
 		String sql = "INSERT INTO book_copy (isbn) VALUES (?)";
-		PreparedStatement stmt = con.prepareStatement(sql);
+		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setString(1, isbn);
 		stmt.executeUpdate();
 		stmt.close();
-	}
-
-	private Connection getConnection() {
-		ResourceBundle rb = ResourceBundle.getBundle("/models/db_config");
-		// JDBCドライバの登録
-		try {
-			Class.forName("org.postgresql.Driver");
-			String url = rb.getString("url");
-			String user = rb.getString("user");
-			String pass = rb.getString("password");
-			Connection con = DriverManager.getConnection(url, user, pass);
-			return con;
-		} catch (ClassNotFoundException | SQLException e) {
-			System.err.println("DBのドライバーが壊れているか、DBの認証情報が間違っていると思います。");
-			e.printStackTrace();
-			return null;
-		}
 	}
 
 }

@@ -1,8 +1,6 @@
 package models.dao;
 
 import java.io.UnsupportedEncodingException;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,23 +9,17 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.ResourceBundle;
 
 import javax.servlet.http.HttpServletRequest;
 
 import exceptions.NoResultException;
 import models.bean.Member;
 
-public class MemberDao {
-	Connection con;
-
-	public MemberDao() {
-		con = getConnection();
-	}
+public class MemberDao extends Dao {
 
 	public List<Member> findAll() throws SQLException {
 		String sql = "SELECT * FROM member ORDER BY id";
-		PreparedStatement stmt = con.prepareStatement(sql);
+		PreparedStatement stmt = conn.prepareStatement(sql);
 		ResultSet rs = stmt.executeQuery();
 		List<Member> members = new ArrayList<Member>();
 		while (rs.next()) {
@@ -43,7 +35,7 @@ public class MemberDao {
 		String sql = "SELECT * FROM member WHERE id = ?";
 		PreparedStatement stmt;
 		try {
-			stmt = con.prepareStatement(sql);
+			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, id);
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
@@ -68,7 +60,7 @@ public class MemberDao {
 	 */
 	public int create(Member member) throws SQLException {
 		String sql = "INSERT INTO member (family_name, given_name, postal_code, address, tel, email, birthday, subscribed_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-		PreparedStatement stmt = con.prepareStatement(sql);
+		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setString(1, member.getFamilyName());
 		stmt.setString(2, member.getGivenName());
 		stmt.setString(3, member.getPostalCode());
@@ -79,7 +71,7 @@ public class MemberDao {
 		stmt.setDate(8, new java.sql.Date(new Date().getTime()));
 		stmt.executeUpdate();
 		sql = "SELECT MAX(id) FROM member";
-		stmt = con.prepareStatement(sql);
+		stmt = conn.prepareStatement(sql);
 		ResultSet rs = stmt.executeQuery();
 		rs.next();
 		int id = rs.getInt("max");
@@ -91,7 +83,7 @@ public class MemberDao {
 
 	public void update(Member member) throws SQLException {
 		String sql = "UPDATE member SET family_name=?, given_name=?, postal_code=?, address=?, tel=?, email=?, birthday=? WHERE id=?";
-		PreparedStatement stmt = con.prepareStatement(sql);
+		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setString(1, member.getFamilyName());
 		stmt.setString(2, member.getGivenName());
 		stmt.setString(3, member.getPostalCode());
@@ -106,27 +98,10 @@ public class MemberDao {
 
 	public void delete(int id) throws SQLException {
 		String sql = "DELETE FROM member WHERE id = ?";
-		PreparedStatement stmt = con.prepareStatement(sql);
+		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setInt(1, id);
 		stmt.executeUpdate();
 		stmt.close();
-	}
-
-	private Connection getConnection() {
-		ResourceBundle rb = ResourceBundle.getBundle("/models/db_config");
-		// JDBCドライバの登録
-		try {
-			Class.forName("org.postgresql.Driver");
-			String url = rb.getString("url");
-			String user = rb.getString("user");
-			String pass = rb.getString("password");
-			Connection con = DriverManager.getConnection(url, user, pass);
-			return con;
-		} catch (ClassNotFoundException | SQLException e) {
-			System.err.println("DBのドライバーが壊れているか、DBの認証情報が間違っていると思います。");
-			e.printStackTrace();
-			return null;
-		}
 	}
 
 	private Member buildMember(ResultSet rs) throws SQLException {
