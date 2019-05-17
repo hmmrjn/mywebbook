@@ -7,9 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import exceptions.NoResultException;
+import models.bean.BookCopy;
+import models.bean.Member;
 import models.bean.Rental;
 
 public class RentalDao extends Dao {
+
+	MemberDao memberDao = new MemberDao();
+	BookCopyDao bookCopyDao = new BookCopyDao();
 
 	public List<Rental> findAll() {
 		String sql = "SELECT * FROM rental";
@@ -98,8 +103,8 @@ public class RentalDao extends Dao {
 		String sql = "INSERT INTO rental (book_copy_id, member_id, rented_at, return_by) VALUES (?, ?, ?, ?)";
 		try {
 			PreparedStatement stmt = conn.prepareStatement(sql);
-			stmt.setInt(1, rental.getBookCopyId());
-			stmt.setInt(2, rental.getMemberId());
+			stmt.setInt(1, rental.getBookCopy().getId());
+			stmt.setInt(2, rental.getMember().getId());
 			stmt.setDate(3, new java.sql.Date(rental.getRentedAt().getTime()));
 			stmt.setDate(4, new java.sql.Date(rental.getReturnBy().getTime()));
 			stmt.executeUpdate();
@@ -113,11 +118,11 @@ public class RentalDao extends Dao {
 		String sql = "UPDATE rental SET member_id = ?, rented_at = ?, return_by = ?, returned_at = ? WHERE book_copy_id = ?";
 		try {
 			PreparedStatement stmt = conn.prepareStatement(sql);
-			stmt.setInt(1, rental.getMemberId());
+			stmt.setInt(1, rental.getMember().getId());
 			stmt.setDate(2, new java.sql.Date(rental.getRentedAt().getTime()));
 			stmt.setDate(3, new java.sql.Date(rental.getReturnBy().getTime()));
 			stmt.setDate(4, new java.sql.Date(rental.getReturnedAt().getTime()));
-			stmt.setInt(5, rental.getBookCopyId());
+			stmt.setInt(5, rental.getBookCopy().getId());
 			stmt.executeUpdate();
 			stmt.close();
 		} catch (SQLException e) {
@@ -128,8 +133,13 @@ public class RentalDao extends Dao {
 	private Rental buildRental(ResultSet rs) throws SQLException {
 		Rental rental = new Rental();
 		rental.setId(rs.getInt("id"));
-		rental.setMemberId(rs.getInt("member_id"));
-		rental.setBookCopyId(rs.getInt("book_copy_id"));
+		try {
+			Member member = memberDao.findById(rs.getInt("member_id"));
+			BookCopy bookCopy = bookCopyDao.findById(rs.getInt("book_copy_id"));
+			rental.setMember(member);
+			rental.setBookCopy(bookCopy);
+		} catch (NoResultException ignore) {
+		}
 		rental.setRentedAt(rs.getDate("rented_at"));
 		rental.setReturnBy(rs.getDate("return_by"));
 		rental.setReturnedAt(rs.getDate("returned_at"));
