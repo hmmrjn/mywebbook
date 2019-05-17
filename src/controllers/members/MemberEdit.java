@@ -1,7 +1,6 @@
 package controllers.members;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.text.ParseException;
 
 import javax.servlet.ServletException;
@@ -46,10 +45,6 @@ public class MemberEdit extends Controller {
 		} catch (ParseException e) {
 			e.printStackTrace();
 			request.setAttribute("message", "日付が不正です。");
-			request.getRequestDispatcher("/mywebbook/members/edit?id=" + request.getParameter("id"));
-		} catch (SQLException e) {
-			e.printStackTrace();
-			request.setAttribute("message", "SQLエラー発生。");
 			request.getRequestDispatcher("/mywebbook/members/edit?id=" + request.getParameter("id"));
 		}
 	}

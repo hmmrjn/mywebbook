@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import exceptions.NoResultException;
 import models.bean.Book;
 import models.bean.BookCopy;
+
 public class BookDao extends Dao {
 
 	// TODO 速度面check
@@ -273,12 +274,16 @@ public class BookDao extends Dao {
 		}
 	}
 
-	private void createCopy(String isbn) throws SQLException {
+	private void createCopy(String isbn) {
 		String sql = "INSERT INTO book_copy (isbn) VALUES (?)";
-		PreparedStatement stmt = conn.prepareStatement(sql);
-		stmt.setString(1, isbn);
-		stmt.executeUpdate();
-		stmt.close();
+		try {
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setString(1, isbn);
+			stmt.executeUpdate();
+			stmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

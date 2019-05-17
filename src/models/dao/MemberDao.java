@@ -12,22 +12,27 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import exceptions.BadParamsException;
 import exceptions.NoResultException;
 import models.bean.Member;
 
 public class MemberDao extends Dao {
 
-	public List<Member> findAll() throws SQLException {
+	public List<Member> findAll() {
 		String sql = "SELECT * FROM member ORDER BY id";
-		PreparedStatement stmt = conn.prepareStatement(sql);
-		ResultSet rs = stmt.executeQuery();
 		List<Member> members = new ArrayList<Member>();
-		while (rs.next()) {
-			Member member = buildMember(rs);
-			members.add(member);
+		try {
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				Member member = buildMember(rs);
+				members.add(member);
+			}
+			stmt.close();
+			rs.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
-		stmt.close();
-		rs.close();
 		return members;
 	}
 
@@ -58,50 +63,63 @@ public class MemberDao extends Dao {
 	 * @return 新規登録したmemberのid
 	 * @throws SQLException
 	 */
-	public int create(Member member) throws SQLException {
+	public int create(Member member) {
 		String sql = "INSERT INTO member (family_name, given_name, postal_code, address, tel, email, birthday, subscribed_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-		PreparedStatement stmt = conn.prepareStatement(sql);
-		stmt.setString(1, member.getFamilyName());
-		stmt.setString(2, member.getGivenName());
-		stmt.setString(3, member.getPostalCode());
-		stmt.setString(4, member.getAddress());
-		stmt.setString(5, member.getTel());
-		stmt.setString(6, member.getEmail());
-		stmt.setDate(7, new java.sql.Date(member.getBirthday().getTime()));
-		stmt.setDate(8, new java.sql.Date(new Date().getTime()));
-		stmt.executeUpdate();
-		sql = "SELECT MAX(id) FROM member";
-		stmt = conn.prepareStatement(sql);
-		ResultSet rs = stmt.executeQuery();
-		rs.next();
-		int id = rs.getInt("max");
-		stmt.close();
-		rs.close();
-		System.out.println(id);
-		return id;
+		try {
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setString(1, member.getFamilyName());
+			stmt.setString(2, member.getGivenName());
+			stmt.setString(3, member.getPostalCode());
+			stmt.setString(4, member.getAddress());
+			stmt.setString(5, member.getTel());
+			stmt.setString(6, member.getEmail());
+			stmt.setDate(7, new java.sql.Date(member.getBirthday().getTime()));
+			stmt.setDate(8, new java.sql.Date(new Date().getTime()));
+			stmt.executeUpdate();
+			sql = "SELECT MAX(id) FROM member";
+			stmt = conn.prepareStatement(sql);
+			ResultSet rs = stmt.executeQuery();
+			rs.next();
+			int id = rs.getInt("max");
+			stmt.close();
+			rs.close();
+			return id;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return -1;
+		}
 	}
 
-	public void update(Member member) throws SQLException {
+	public void update(Member member) {
 		String sql = "UPDATE member SET family_name=?, given_name=?, postal_code=?, address=?, tel=?, email=?, birthday=? WHERE id=?";
-		PreparedStatement stmt = conn.prepareStatement(sql);
-		stmt.setString(1, member.getFamilyName());
-		stmt.setString(2, member.getGivenName());
-		stmt.setString(3, member.getPostalCode());
-		stmt.setString(4, member.getAddress());
-		stmt.setString(5, member.getTel());
-		stmt.setString(6, member.getEmail());
-		stmt.setDate(7, new java.sql.Date(member.getBirthday().getTime()));
-		stmt.setInt(8, member.getId());
-		stmt.executeUpdate();
-		stmt.close();
+		try {
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setString(1, member.getFamilyName());
+			stmt.setString(2, member.getGivenName());
+			stmt.setString(3, member.getPostalCode());
+			stmt.setString(4, member.getAddress());
+			stmt.setString(5, member.getTel());
+			stmt.setString(6, member.getEmail());
+			stmt.setDate(7, new java.sql.Date(member.getBirthday().getTime()));
+			stmt.setInt(8, member.getId());
+			stmt.executeUpdate();
+			stmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
-	public void delete(int id) throws SQLException {
+	public void delete(int id) throws BadParamsException {
 		String sql = "DELETE FROM member WHERE id = ?";
-		PreparedStatement stmt = conn.prepareStatement(sql);
-		stmt.setInt(1, id);
-		stmt.executeUpdate();
-		stmt.close();
+		try {
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, id);
+			stmt.executeUpdate();
+			stmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new BadParamsException();
+		}
 	}
 
 	private Member buildMember(ResultSet rs) throws SQLException {

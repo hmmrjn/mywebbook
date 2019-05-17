@@ -1,7 +1,7 @@
 package exceptions;
 
 /**
- * Logicに渡されたパラメータが間違っている例外
+ * LogicまたはDaoに渡されたパラメータが間違っている例外
  * @author SCI01961
  *
  */

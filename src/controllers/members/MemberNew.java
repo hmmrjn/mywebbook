@@ -1,7 +1,6 @@
 package controllers.members;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.text.ParseException;
 
 import javax.servlet.ServletException;
@@ -32,10 +31,6 @@ public class MemberNew extends Controller {
 			member = memberDao.buildMember(request);
 			memberDao.create(member);
 			response.sendRedirect("/mywebbook/members");
-		} catch (SQLException e) {
-			e.printStackTrace();
-			request.setAttribute("message", "エラーが発生しました。");
-			request.getRequestDispatcher("/mywebbook/members/new");
 		} catch (ParseException e) {
 			e.printStackTrace();
 			request.setAttribute("message", "日付が不正です。");

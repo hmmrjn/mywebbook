@@ -1,7 +1,6 @@
 package controllers.members;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import controllers.Controller;
+import exceptions.BadParamsException;
 import models.dao.MemberDao;
 
 /**
@@ -22,7 +22,7 @@ public class MemberDelete extends Controller {
 		MemberDao memberDao = new MemberDao();
 		try {
 			memberDao.delete(Integer.parseInt(request.getParameter("id")));
-		} catch (NumberFormatException | SQLException e) {
+		} catch (NumberFormatException | BadParamsException e) {
 			request.setAttribute("message", "削除できません。無効なIDです。");
 		} finally {
 			response.sendRedirect("/mywebbook/members");
