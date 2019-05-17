@@ -15,6 +15,7 @@ import java.util.ResourceBundle;
 
 import javax.servlet.http.HttpServletRequest;
 
+import exceptions.NoResultException;
 import models.bean.Member;
 
 public class MemberDao {
@@ -38,16 +39,25 @@ public class MemberDao {
 		return members;
 	}
 
-	public Member findById(int id) throws SQLException {
+	public Member findById(int id) throws NoResultException {
 		String sql = "SELECT * FROM member WHERE id = ?";
-		PreparedStatement stmt = con.prepareStatement(sql);
-		stmt.setInt(1, id);
-		ResultSet rs = stmt.executeQuery();
-		rs.next();
-		Member member = buildMember(rs);
-		stmt.close();
-		rs.close();
-		return member;
+		PreparedStatement stmt;
+		try {
+			stmt = con.prepareStatement(sql);
+			stmt.setInt(1, id);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				Member member = buildMember(rs);
+				stmt.close();
+				rs.close();
+				return member;
+			} else {
+				throw new NoResultException();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new NoResultException();
+		}
 	}
 
 	/**

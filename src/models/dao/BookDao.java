@@ -12,9 +12,11 @@ import java.util.ResourceBundle;
 
 import javax.servlet.http.HttpServletRequest;
 
+import exceptions.NoResultException;
 import models.bean.Book;
 import models.bean.BookCopy;
 
+// TODO SQLException to NoResultException
 public class BookDao {
 	Connection con;
 
@@ -148,6 +150,29 @@ public class BookDao {
 		stmt.close();
 		rs.close();
 		return bookCopies;
+	}
+
+	public BookCopy findBookCopyById(int id) throws NoResultException {
+
+		String sql = "SELECT * from book_copy WHERE id = ?";
+		try {
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setInt(1, id);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				BookCopy bookCopy = new BookCopy();
+				bookCopy.setId(id);
+				bookCopy.setIsbn(rs.getString("isbn"));
+				stmt.close();
+				rs.close();
+				return bookCopy;
+			} else {
+				throw new NoResultException();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new NoResultException();
+		}
 	}
 
 	private int categoryIdByName(String categoryName) throws SQLException {

@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import exceptions.NoResultException;
 import models.bean.Member;
 import models.dao.MemberDao;
 
@@ -28,8 +29,7 @@ public class Edit extends HttpServlet {
 			Member member = memberDao.findById(id);
 			request.setAttribute("member", member);
 			request.getRequestDispatcher("/members/edit.jsp").forward(request, response);
-		} catch (NumberFormatException | SQLException e) {
-			e.printStackTrace();
+		} catch (NumberFormatException | NoResultException e) {
 			HttpSession session = request.getSession();
 			session.setAttribute("message", "無効なIDです。");
 			response.sendRedirect("/mywebbook/");

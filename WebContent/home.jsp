@@ -11,10 +11,8 @@
 	<%@ include file="/common/header.jsp"%>
 	<h1>ホーム</h1>
 
-	<div class="message">${message}</div>
-
-	<h2>借出・返却</h2>
-	<form action="/mywebbook/judgeRentalOrReturn" method="post">
+	<h2>借出</h2>
+	<form action="/mywebbook/rental/new" method="post">
 
 		会員ID <input name="memberId" type="text" /> 図書ID <input
 			name="bookCopyId" type="text" /> <input type="submit" value="送信" />
