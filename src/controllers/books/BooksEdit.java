@@ -12,6 +12,8 @@ import javax.servlet.http.HttpSession;
 import controllers.Controller;
 import exceptions.NoResultException;
 import models.bean.Book;
+import models.bean.Category;
+import models.bean.Publisher;
 import models.dao.BookDao;
 
 @WebServlet("/books/edit")
@@ -23,8 +25,8 @@ public class BooksEdit extends Controller {
 		BookDao bookDao = new BookDao();
 		try {
 			Book book = bookDao.findByIsbn(isbn);
-			List<String> categories = bookDao.findCategories();
-			List<String> publishers = bookDao.findPublishers();
+			List<Category> categories = bookDao.findCategories();
+			List<Publisher> publishers = bookDao.findPublishers();
 			request.setAttribute("book", book);
 			request.setAttribute("categories", categories);
 			request.setAttribute("publishers", publishers);

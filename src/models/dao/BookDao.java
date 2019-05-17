@@ -58,15 +58,18 @@ public class BookDao extends Dao {
 		}
 	}
 
-	public List<String> findCategories() {
-		String sql = "SELECT name FROM category ORDER BY id";
-		List<String> categories = new ArrayList<String>();
+	public List<Category> findCategories() {
+		String sql = "SELECT * FROM category ORDER BY id";
+		List<Category> categories = new ArrayList<Category>();
 		try {
 
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
-				categories.add(rs.getString("name"));
+				Category category = new Category();
+				category.setId(rs.getInt("id"));
+				category.setName(rs.getString("name"));
+				categories.add(category);
 			}
 			stmt.close();
 			rs.close();
@@ -76,14 +79,17 @@ public class BookDao extends Dao {
 		return categories;
 	}
 
-	public List<String> findPublishers() {
-		String sql = "SELECT name FROM publisher ORDER BY id";
-		List<String> publishers = new ArrayList<String>();
+	public List<Publisher> findPublishers() {
+		String sql = "SELECT * FROM publisher ORDER BY id";
+		List<Publisher> publishers = new ArrayList<Publisher>();
 		try {
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
-				publishers.add(rs.getString("name"));
+				Publisher publisher = new Publisher();
+				publisher.setId(rs.getInt("id"));
+				publisher.setName(rs.getString("name"));
+				publishers.add(publisher);
 			}
 			stmt.close();
 			rs.close();

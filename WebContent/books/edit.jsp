@@ -18,9 +18,9 @@
 			</tr>
 			<tr>
 				<td>カテゴリー</td>
-				<td><select name="category">
+				<td><select name="categoryId">
 						<c:forEach items="${categories}" var="category">
-							<option value="${category}">${category}</option>
+							<option value="${category.id}">${category.name}</option>
 						</c:forEach>
 				</select> <a href="/mywebbook/book/categories/new">新規</a></td>
 			</tr>
@@ -30,9 +30,9 @@
 			</tr>
 			<tr>
 				<td>出版元</td>
-				<td><select name="publisher">
+				<td><select name="publisherId">
 						<c:forEach items="${publishers}" var="publisher">
-							<option value="${publisher}">${publisher}</option>
+							<option value="${publisher.id}">${publisher.name}</option>
 						</c:forEach>
 				</select> <a href="/mywebbook/book/publishers/new">新規</a></td>
 			</tr>

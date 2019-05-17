@@ -29,9 +29,9 @@
 				<td>${s.count}</td>
 				<td>${book.isbn}</td>
 				<td>${book.name}</td>
-				<td>${book.category}</td>
+				<td>${book.category.name}</td>
 				<td>${book.author}</td>
-				<td>${book.publisher}</td>
+				<td>${book.name}</td>
 				<td>${fn:length(book.copies)}</td>
 				<td><a href="/mywebbook/books/show?isbn=${book.isbn}">詳細</a></td>
 				<td><a href="/mywebbook/books/edit?isbn=${book.isbn}">編集</a></td>

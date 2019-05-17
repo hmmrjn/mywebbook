@@ -23,7 +23,7 @@
 		</tr>
 		<tr>
 			<td>カテゴリー</td>
-			<td>${book.category}</td>
+			<td>${book.category.name}</td>
 		</tr>
 		<tr>
 			<td>著者</td>
@@ -31,7 +31,7 @@
 		</tr>
 		<tr>
 			<td>出版元</td>
-			<td>${book.publisher}</td>
+			<td>${book.publisher.name}</td>
 		</tr>
 	</table>
 

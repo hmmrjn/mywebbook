@@ -12,16 +12,16 @@
 	<h1>借出中一覧</h1>
 	<table border="1">
 		<tr>
-			<th>memberId</th>
-			<th>bookCopyId</th>
+			<th>会員</th>
+			<th>資料ID</th>
 			<th>借出日時</th>
 			<th>返却期日</th>
 			<th>返却日</th>
 		</tr>
 		<c:forEach items="${rentalsNotReturned}" var="rental">
 			<tr>
-				<td>${rental.memberId}</td>
-				<td>${rental.bookCopyId}</td>
+				<td>${rental.member.familyName}${rental.member.givenName}</td>
+				<td>${rental.bookCopy.id}</td>
 				<td>${rental.rentedAt}</td>
 				<td>${rental.returnBy}</td>
 				<td>${rental.returnedAt}</td>
@@ -31,16 +31,16 @@
 	<h1>借出履歴一覧</h1>
 	<table border="1">
 		<tr>
-			<th>memberId</th>
-			<th>bookCopyId</th>
+			<th>会員</th>
+			<th>資料ID</th>
 			<th>借出日時</th>
 			<th>返却期日</th>
 			<th>返却日</th>
 		</tr>
 		<c:forEach items="${rentalsReturned}" var="rental">
 			<tr>
-				<td>${rental.memberId}</td>
-				<td>${rental.bookCopyId}</td>
+				<td>${rental.member.familyName}${rental.member.givenName}</td>
+				<td>${rental.bookCopy.id}</td>
 				<td>${rental.rentedAt}</td>
 				<td>${rental.returnBy}</td>
 				<td>${rental.returnedAt}</td>
