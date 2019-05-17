@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 MyWebBook
 <a href="/mywebbook/">ホーム</a>
+<a href="/mywebbook/rentals">借出一覧</a>
 <a href="/mywebbook/members">会員一覧</a>
 <a href="/mywebbook/books">図書一覧</a>
 <hr />
