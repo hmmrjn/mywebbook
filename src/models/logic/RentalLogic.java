@@ -24,8 +24,14 @@ public class RentalLogic {
 
 	public void rent(int memberId, int bookCopyId) throws ValidationException {
 		if (isRentedNow(bookCopyId)) {
-			throw new ValidationException("この資料はただいま借りられています。");
+			throw new ValidationException("資料IDが間違っています。この資料はただいま別の人に借りられているはずです。");
 		}
+
+		List<Rental> rentals = rentalDao.findNotReturnedByMemberId(memberId);
+		if (rentals.size() >= 5) {
+			throw new ValidationException("これ以上借りられません。この会員はすでに5冊借りています。");
+		}
+
 		Rental rental = new Rental();
 		try {
 			BookCopy bookCopy = bookCopyDao.findById(bookCopyId);
@@ -34,7 +40,7 @@ public class RentalLogic {
 
 			Date returnBy = todayPlusDays(15);
 			int daysDiff = daysFromToday(book.getReleasedAt());
-			if (daysDiff  < 30 * 3) {
+			if (daysDiff < 30 * 3) {
 				returnBy = todayPlusDays(10);
 			}
 			rental.setBookCopy(bookCopy);
