@@ -20,7 +20,10 @@
 				<td>カテゴリー</td>
 				<td><select name="categoryId">
 						<c:forEach items="${categories}" var="category">
-							<option value="${category.id}">${category.name}</option>
+							<c:if test="${category.id == book.category.id}">
+								<c:set var="selected" value="selected" />
+							</c:if>
+							<option value="${category.id}" ${selected}>${category.name}</option>
 						</c:forEach>
 				</select> <a href="/mywebbook/book/categories/new">新規</a></td>
 			</tr>
@@ -32,7 +35,10 @@
 				<td>出版元</td>
 				<td><select name="publisherId">
 						<c:forEach items="${publishers}" var="publisher">
-							<option value="${publisher.id}">${publisher.name}</option>
+							<c:if test="${publisher.id == book.publisher.id}">
+								<c:set var="selected" value="selected" />
+							</c:if>
+							<option value="${publisher.id}" ${selected}>${publisher.name}</option>
 						</c:forEach>
 				</select> <a href="/mywebbook/book/publishers/new">新規</a></td>
 			</tr>
