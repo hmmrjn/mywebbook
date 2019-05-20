@@ -14,12 +14,12 @@
 	<h2>借出</h2>
 	<form action="/mywebbook/rentals/new" method="post">
 
-		図書ID <input name="bookCopyId" type="text" /> 会員ID <input
+		資料ID <input name="bookCopyId" type="text" /> 会員ID <input
 			name="memberId" type="text" /><input type="submit" value="借出" />
 	</form>
 	<h2>返却</h2>
 	<form action="/mywebbook/rentals/set_returned" method="post">
-		図書ID <input name="bookCopyId" type="text" /> <input type="submit"
+		資料ID <input name="bookCopyId" type="text" /> <input type="submit"
 			value="返却" />
 	</form>
 
