@@ -140,7 +140,7 @@ public class BookDao extends Dao {
 		Publisher publisher = publisherDao.findById(publisherId);
 		book.setPublisher(publisher);
 		book.setReleasedAt(rs.getDate("released_at"));
-		book.setCopies(bookCopyDao.findByIsbn(isbn));
+		book.setCopies(bookCopyDao.findByIsbn(isbn, true));
 		return book;
 	}
 }

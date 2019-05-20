@@ -18,9 +18,7 @@ public class BookCopyDao extends Dao {
 			stmt.setInt(1, id);
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
-				BookCopy bookCopy = new BookCopy();
-				bookCopy.setId(rs.getInt("id"));
-				bookCopy.setIsbn(rs.getString("isbn"));
+				BookCopy bookCopy = buildBookCopy(rs);
 				rs.close();
 				stmt.close();
 				return bookCopy;
@@ -33,17 +31,18 @@ public class BookCopyDao extends Dao {
 		return null;
 	}
 
-	public List<BookCopy> findByIsbn(String isbn) {
-		String sql = "SELECT id FROM book_copy WHERE isbn = ?";
+	public List<BookCopy> findByIsbn(String isbn, boolean findNotDiscarded) {
+		String sql = "SELECT * FROM book_copy WHERE isbn = ?";
+		if(findNotDiscarded) {
+			sql += " AND discarded_at IS NULL";
+		}
 		List<BookCopy> bookCopies = new ArrayList<BookCopy>();
 		try {
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setString(1, isbn);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
-				BookCopy bookCopy = new BookCopy();
-				bookCopy.setId(rs.getInt("id"));
-				bookCopy.setIsbn(isbn);
+				BookCopy bookCopy = buildBookCopy(rs);
 				bookCopies.add(bookCopy);
 			}
 			stmt.close();
@@ -55,10 +54,11 @@ public class BookCopyDao extends Dao {
 	}
 
 	public void create(BookCopy bookCopy) {
-		String sql = "INSERT INTO book_copy (isbn) VALUES (?) ";
+		String sql = "INSERT INTO book_copy (isbn, created_at) VALUES (?, ?) ";
 		try {
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setString(1, bookCopy.getIsbn());
+			stmt.setDate(2, new java.sql.Date(bookCopy.getCreatedAt().getTime()));
 			stmt.executeUpdate();
 			stmt.close();
 		} catch (SQLException e) {
@@ -66,16 +66,40 @@ public class BookCopyDao extends Dao {
 		}
 	}
 
-	public void delete(int id) {
-		String sql = "DELETE FROM book_copy WHERE id = ?";
+	public void update(BookCopy bookCopy) {
+		String sql = "UPDATE book_copy SET isbn = ?, created_at = ?, discarded_at = ? WHERE id = ?";
 		try {
 			PreparedStatement stmt = conn.prepareStatement(sql);
-			stmt.setInt(1, id);
+			stmt.setString(1, bookCopy.getIsbn());
+			stmt.setDate(2, new java.sql.Date(bookCopy.getCreatedAt().getTime()));
+			stmt.setDate(3, new java.sql.Date(bookCopy.getDiscardedAt().getTime()));
+			stmt.setInt(4, bookCopy.getId());
 			stmt.executeUpdate();
 			stmt.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+
+	//	public void delete(int id) {
+	//		String sql = "DELETE FROM book_copy WHERE id = ?";
+	//		try {
+	//			PreparedStatement stmt = conn.prepareStatement(sql);
+	//			stmt.setInt(1, id);
+	//			stmt.executeUpdate();
+	//			stmt.close();
+	//		} catch (SQLException e) {
+	//			e.printStackTrace();
+	//		}
+	//	}
+
+	private BookCopy buildBookCopy(ResultSet rs) throws SQLException {
+		BookCopy bookCopy = new BookCopy();
+		bookCopy.setId(rs.getInt("id"));
+		bookCopy.setIsbn(rs.getString("isbn"));
+		bookCopy.setCreatedAt(rs.getDate("created_at"));
+		bookCopy.setDiscardedAt(rs.getDate("discarded_at"));
+		return bookCopy;
 	}
 
 }
