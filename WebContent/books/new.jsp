@@ -14,15 +14,18 @@
 		<table border="1">
 			<tr>
 				<td>ISBN</td>
-				<td><input type="text" name="isbn" value="${book.isbn}" /></td>
+				<td><input type="text" name="isbn" value="${book.isbn}"
+					required pattern="\d{3}-\d-\d{2}-\d{6}-\d" /></td>
+				<td>例: 978-4-00-310101-8。ハイフン(-)を入れて入力してください。</td>
 			</tr>
 			<tr>
 				<td>書名</td>
-				<td><input type="text" name="name" value="${book.name}" /></td>
+				<td><input type="text" name="name" value="${book.name}"
+					required /></td>
 			</tr>
 			<tr>
 				<td>カテゴリー</td>
-				<td><select name="categoryId">
+				<td><select name="categoryId" required>
 						<c:forEach items="${categories}" var="category">
 							<option value="${category.id}">${category.name}</option>
 						</c:forEach>
@@ -30,11 +33,12 @@
 			</tr>
 			<tr>
 				<td>著者</td>
-				<td><input type="text" name="author" value="${book.author}"></td>
+				<td><input type="text" name="author" value="${book.author}"
+					required></td>
 			</tr>
 			<tr>
 				<td>出版元</td>
-				<td><select name="publisherId">
+				<td><select name="publisherId" required>
 						<c:forEach items="${publishers}" var="publisher">
 							<option value="${publisher.id}">${publisher.name}</option>
 						</c:forEach>

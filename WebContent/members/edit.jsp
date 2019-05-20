@@ -25,7 +25,8 @@
 			<tr>
 				<td>郵便番号</td>
 				<td><input name="postalCode" type="text"
-					value="${member.postalCode}" required /></td>
+					value="${member.postalCode}" required pattern="\d{3}-\d{4}" /></td>
+				<td>(000-0000。ハイフン(-)を入れて入力ください。)</td>
 			</tr>
 			<tr>
 				<td>住所</td>
@@ -35,7 +36,8 @@
 			<tr>
 				<td>電話番号</td>
 				<td><input name="tel" type="text" value="${member.tel}"
-					required /></td>
+					required pattern="\d{4}-\d{2}-\d{4}|\d{3}-\d{4}-\d{4}" /></td>
+				<td>(0000-00-0000、もしくは、000-0000-0000。ハイフン(-)を入れて入力ください。)</td>
 			</tr>
 			<tr>
 				<td>メールアドレス</td>
@@ -46,7 +48,7 @@
 				<td>生年月日</td>
 				<c:set var="dateName" value="birthday" />
 				<c:set var="defaultDate" value="${member.birthday}" />
-				<td><%@ include file="/common/datepicker.jsp" %></td>
+				<td><%@ include file="/common/datepicker.jsp"%></td>
 			</tr>
 
 		</table>

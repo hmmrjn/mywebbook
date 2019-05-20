@@ -108,7 +108,9 @@ public class BookDao extends Dao {
 			e.printStackTrace();
 		}
 		Book book = new Book();
-		book.setIsbn(request.getParameter("isbn"));
+		String isbn = request.getParameter("isbn");
+		isbn = isbn.replace("-", "");
+		book.setIsbn(isbn);
 		book.setName(request.getParameter("name"));
 		book.setAuthor(request.getParameter("author"));
 		int categoryId = Integer.parseInt(request.getParameter("categoryId"));
