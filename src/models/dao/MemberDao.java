@@ -57,6 +57,25 @@ public class MemberDao extends Dao {
 		}
 	}
 
+	public List<Member> findByEmailLike(String str) {
+		String sql = "SELECT * FROM member WHERE email LIKE ?";
+		List<Member> members = new ArrayList<Member>();
+		try {
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setString(1, "%" + str + "%");
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				Member member = buildMember(rs);
+				members.add(member);
+			}
+			stmt.close();
+			rs.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return members;
+	}
+
 	/**
 	 *
 	 * @param member

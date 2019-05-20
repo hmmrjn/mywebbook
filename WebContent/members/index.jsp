@@ -11,6 +11,10 @@
 <body>
 	<%@ include file="/common/header.jsp"%>
 	<h1>会員一覧</h1>
+	<form action="/mywebbook/members/search" method="get">
+		<input name="email" type="text" /> <input type="submit"
+			value="email検索" />
+	</form>
 	<a href="/mywebbook/members/new">新規会員</a>
 	<table border="1">
 		<tr>
