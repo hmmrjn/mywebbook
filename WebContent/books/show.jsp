@@ -40,21 +40,32 @@
 	</table>
 
 	<p>この図書は${fn:length(book.copies)}冊あります。</p>
-
 	<table border="1">
 		<tr>
 			<th>No</th>
 			<th>資料ID</th>
+			<th>入荷日</th>
 			<th>操作</th>
 		</tr>
+
 		<c:forEach items="${book.copies}" var="copy" varStatus="s">
-			<tr>
+			<c:set var="highlight" value="" />
+			<c:if test="${param.highlightId == copy.id}">
+				<c:set var="highlight" value="highlight" />
+			</c:if>
+			<tr class="${highlight}">
 				<td>${s.count}</td>
 				<td>${copy.id}</td>
+				<td>${copy.createdAt}</td>
 				<td><a href="/mywebbook/bookcopies/discard?id=${copy.id}">破棄</a></td>
 			</tr>
 		</c:forEach>
 	</table>
 	<a href="books/copies/new">資料を追加</a>
 </body>
+<style>
+.highlight {
+	background: yellow;
+}
+</style>
 </html>

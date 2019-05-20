@@ -12,6 +12,10 @@
 <body>
 	<%@ include file="/common/header.jsp"%>
 	<h1>図書一覧</h1>
+	<form action="/mywebbook/bookcopies/search" method="get">
+		<input name="id" type="text" /><input type="submit"
+			value="資料IDで検索" />
+	</form>
 	<a href="/mywebbook/books/new">新規図書</a>
 	<table border="1">
 		<tr>
