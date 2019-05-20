@@ -61,7 +61,7 @@
 			</tr>
 		</c:forEach>
 	</table>
-	<a href="books/copies/new">資料を追加</a>
+	<a href="/mywebbook/bookcopies/new?isbn=${book.isbn}">資料を追加</a>
 </body>
 <style>
 .highlight {
