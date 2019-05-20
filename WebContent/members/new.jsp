@@ -39,6 +39,7 @@
 			</tr>
 			<tr>
 				<td>生年月日</td>
+				<c:set var="dateName" value="birthday" />
 				<td><%@ include file="/common/datepicker.jsp" %></td>
 			</tr>
 		</table>
