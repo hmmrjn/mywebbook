@@ -47,7 +47,9 @@ CREATE TABLE book_info (
 -- 固有図書情報テーブルの作成
 CREATE TABLE book_copy (
 	id SERIAL PRIMARY KEY,
-	isbn CHAR(13) NOT NULL REFERENCES book_info
+	isbn CHAR(13) NOT NULL REFERENCES book_info,
+	created_at DATE NOT NULL, --追加 いらないけど、あってもいいよね。
+	discarded_at DATE --追加 削除すると借出し履歴で不整合発生。
 );
 
 -- 貸出返却テーブルの作成
@@ -117,17 +119,17 @@ INSERT INTO book_info VALUES('sei000001', 7, 0, '猫と仲良くなるには', '猫田恵美'
 INSERT INTO book_info VALUES('sei000002', 7, 0, 'らくちんダイエット', '細区奈留代', '2019-5-1');
 
 -- 共通図書情報テーブルのサンプルデータ
-INSERT INTO book_copy (isbn) VALUES('kei000001');
-INSERT INTO book_copy (isbn) VALUES('kei000001');
-INSERT INTO book_copy (isbn) VALUES('kei000001');
-INSERT INTO book_copy (isbn) VALUES('kei000002');
-INSERT INTO book_copy (isbn) VALUES('kei000002');
-INSERT INTO book_copy (isbn) VALUES('kei000002');
-INSERT INTO book_copy (isbn) VALUES('rek000001');
-INSERT INTO book_copy (isbn) VALUES('rek000002');
-INSERT INTO book_copy (isbn) VALUES('com000001');
-INSERT INTO book_copy (isbn) VALUES('com000002');
-INSERT INTO book_copy (isbn) VALUES('bun000001');
-INSERT INTO book_copy (isbn) VALUES('bun000002');
-INSERT INTO book_copy (isbn) VALUES('sei000001');
-INSERT INTO book_copy (isbn) VALUES('sei000002');
+INSERT INTO book_copy (isbn, created_at, discarded_at) VALUES('kei000001', CURRENT_DATE, NULL);
+INSERT INTO book_copy (isbn, created_at, discarded_at) VALUES('kei000001', CURRENT_DATE, NULL);
+INSERT INTO book_copy (isbn, created_at, discarded_at) VALUES('kei000001', CURRENT_DATE, NULL);
+INSERT INTO book_copy (isbn, created_at, discarded_at) VALUES('kei000002', CURRENT_DATE, NULL);
+INSERT INTO book_copy (isbn, created_at, discarded_at) VALUES('kei000002', CURRENT_DATE, NULL);
+INSERT INTO book_copy (isbn, created_at, discarded_at) VALUES('kei000002', CURRENT_DATE, NULL);
+INSERT INTO book_copy (isbn, created_at, discarded_at) VALUES('rek000001', CURRENT_DATE, NULL);
+INSERT INTO book_copy (isbn, created_at, discarded_at) VALUES('rek000002', CURRENT_DATE, NULL);
+INSERT INTO book_copy (isbn, created_at, discarded_at) VALUES('com000001', CURRENT_DATE, NULL);
+INSERT INTO book_copy (isbn, created_at, discarded_at) VALUES('com000002', CURRENT_DATE, NULL);
+INSERT INTO book_copy (isbn, created_at, discarded_at) VALUES('bun000001', CURRENT_DATE, NULL);
+INSERT INTO book_copy (isbn, created_at, discarded_at) VALUES('bun000002', CURRENT_DATE, NULL);
+INSERT INTO book_copy (isbn, created_at, discarded_at) VALUES('sei000001', CURRENT_DATE, NULL);
+INSERT INTO book_copy (isbn, created_at, discarded_at) VALUES('sei000002', CURRENT_DATE, NULL);
