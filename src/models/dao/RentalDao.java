@@ -99,6 +99,23 @@ public class RentalDao extends Dao {
 		}
 	}
 
+	public Rental findNotReturnedByMemberId(int memberId) throws NoResultException {
+		String sql = "SELECT * FROM rental WHERE member_id = ? AND returned_at IS NULL";
+		try {
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, memberId);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				Rental rental = buildRental(rs);
+				return rental;
+			} else {
+				throw new NoResultException();
+			}
+		} catch (SQLException e) {
+			throw new NoResultException();
+		}
+	}
+
 	public void create(Rental rental) {
 		String sql = "INSERT INTO rental (book_copy_id, member_id, rented_at, return_by) VALUES (?, ?, ?, ?)";
 		try {

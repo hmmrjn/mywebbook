@@ -6,4 +6,10 @@ package exceptions;
  *
  */
 public class BadParamsException extends Exception {
+	public BadParamsException() {
+	}
+
+	public BadParamsException(String message) {
+		super(message);
+	}
 }

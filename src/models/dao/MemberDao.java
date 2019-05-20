@@ -91,7 +91,7 @@ public class MemberDao extends Dao {
 	}
 
 	public void update(Member member) {
-		String sql = "UPDATE member SET family_name=?, given_name=?, postal_code=?, address=?, tel=?, email=?, birthday=? WHERE id=?";
+		String sql = "UPDATE member SET family_name=?, given_name=?, postal_code=?, address=?, tel=?, email=?, birthday=?, subscribed_at=?, unsubscribed_at=? WHERE id=?";
 		try {
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setString(1, member.getFamilyName());
@@ -100,8 +100,10 @@ public class MemberDao extends Dao {
 			stmt.setString(4, member.getAddress());
 			stmt.setString(5, member.getTel());
 			stmt.setString(6, member.getEmail());
-			stmt.setDate(7, new java.sql.Date(member.getBirthday().getTime()));
-			stmt.setInt(8, member.getId());
+			stmt.setDate(7, new java.sql.Date(member.getSubscribedAt().getTime()));
+			stmt.setDate(8, new java.sql.Date(member.getUnsubscribedAt().getTime()));
+			stmt.setDate(9, new java.sql.Date(member.getBirthday().getTime()));
+			stmt.setInt(10, member.getId());
 			stmt.executeUpdate();
 			stmt.close();
 		} catch (SQLException e) {
@@ -109,6 +111,7 @@ public class MemberDao extends Dao {
 		}
 	}
 
+	//TODO 関連リレーションも削除するか、メソッドを削除。
 	public void delete(int id) throws BadParamsException {
 		String sql = "DELETE FROM member WHERE id = ?";
 		try {

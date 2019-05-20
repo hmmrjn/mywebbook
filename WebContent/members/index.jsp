@@ -23,7 +23,7 @@
 			<th>誕生日</th>
 			<th>入会日</th>
 			<th>退会日</th>
-			<th colspan="2">操作</th>
+			<th colspan="3">操作</th>
 		</tr>
 		<c:forEach items="${members}" var="member">
 			<tr>
@@ -37,6 +37,7 @@
 				<td>${member.subscribedAt}</td>
 				<td>${member.unsubscribedAt}</td>
 				<td><a href="/mywebbook/members/edit?id=${member.id}">編集</a></td>
+				<td><a href="/mywebbook/members/unsubscribe?id=${member.id}">退会</a></td>
 				<td><a href="/mywebbook/members/delete?id=${member.id}">削除</a></td>
 			</tr>
 		</c:forEach>
