@@ -4,7 +4,10 @@ import java.io.UnsupportedEncodingException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -58,6 +61,7 @@ public class BookDao extends Dao {
 		}
 	}
 
+	// TODO move to CategoryDao
 	public List<Category> findCategories() {
 		String sql = "SELECT * FROM category ORDER BY id";
 		List<Category> categories = new ArrayList<Category>();
@@ -100,7 +104,7 @@ public class BookDao extends Dao {
 	}
 
 	public void create(Book book, int copiesNum) {
-		String sql = "INSERT INTO book_info (isbn, category_id, publisher_id, name, author) VALUES (?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO book_info (isbn, category_id, publisher_id, name, author, released_at) VALUES (?, ?, ?, ?, ?, ?)";
 		try {
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setString(1, book.getIsbn());
@@ -108,6 +112,7 @@ public class BookDao extends Dao {
 			stmt.setInt(3, book.getPublisher().getId());
 			stmt.setString(4, book.getName());
 			stmt.setString(5, book.getAuthor());
+			stmt.setDate(6, new java.sql.Date(book.getReleasedAt().getTime()));
 			stmt.executeUpdate();
 			BookCopy bookCopy = new BookCopy();
 			bookCopy.setIsbn(book.getIsbn());
@@ -122,13 +127,14 @@ public class BookDao extends Dao {
 
 	public void update(Book book) {
 		try {
-			String sql = "UPDATE book_info SET category_id = ?, publisher_id = ?, name = ?, author = ? WHERE isbn = ?";
+			String sql = "UPDATE book_info SET category_id = ?, publisher_id = ?, name = ?, author = ?, released_at = ? WHERE isbn = ?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, book.getCategory().getId());
 			stmt.setInt(2, book.getPublisher().getId());
 			stmt.setString(3, book.getName());
 			stmt.setString(4, book.getAuthor());
-			stmt.setString(5, book.getIsbn());
+			stmt.setDate(5, new java.sql.Date(book.getReleasedAt().getTime()));
+			stmt.setString(6, book.getIsbn());
 			// copies は編集しないので無視。
 			stmt.executeUpdate();
 			stmt.close();
@@ -137,7 +143,7 @@ public class BookDao extends Dao {
 		}
 	}
 
-	public Book buildBookWithoutCopies(HttpServletRequest request) throws NoResultException {
+	public Book buildBookWithoutCopies(HttpServletRequest request) throws NoResultException, ParseException {
 		try {
 			request.setCharacterEncoding("UTF-8");
 		} catch (UnsupportedEncodingException e) {
@@ -153,6 +159,13 @@ public class BookDao extends Dao {
 		int publisherId = Integer.parseInt(request.getParameter("publisherId"));
 		Publisher publisher = publisherDao.findById(publisherId);
 		book.setPublisher(publisher);
+		String by = request.getParameter("releasedAtYear");
+		String bm = request.getParameter("releasedAtMonth");
+		String bd = request.getParameter("releasedAtDay");
+		String dateStr = by + "-" + bm + "-" + bd;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date releasedAt = sdf.parse(dateStr);
+		book.setReleasedAt(releasedAt);
 		return book;
 	}
 
@@ -168,6 +181,7 @@ public class BookDao extends Dao {
 		int publisherId = rs.getInt("publisher_id");
 		Publisher publisher = publisherDao.findById(publisherId);
 		book.setPublisher(publisher);
+		book.setReleasedAt(rs.getDate("released_at"));
 		book.setCopies(bookCopyDao.findByIsbn(isbn));
 		return book;
 	}

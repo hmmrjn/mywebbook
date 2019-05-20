@@ -1,6 +1,7 @@
 package controllers.books;
 
 import java.io.IOException;
+import java.text.ParseException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -34,6 +35,10 @@ public class BooksNew extends Controller {
 			response.sendRedirect("/mywebbook/books/show?isbn=" + book.getIsbn());
 		} catch (NoResultException e) {
 			session.setAttribute("message", "不正なIDです。");
+			setCategoriesAndPublishers(request, response);
+			request.getRequestDispatcher("/books/new.jsp").forward(request, response);
+		} catch (ParseException e) {
+			session.setAttribute("message", "不正な日付です。");
 			setCategoriesAndPublishers(request, response);
 			request.getRequestDispatcher("/books/new.jsp").forward(request, response);
 		}

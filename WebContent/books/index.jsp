@@ -21,6 +21,7 @@
 			<th>カテゴリー</th>
 			<th>著者</th>
 			<th>出版元</th>
+			<th>発売日</th>
 			<th>資料数</th>
 			<th colspan="2">操作</th>
 		</tr>
@@ -31,7 +32,8 @@
 				<td>${book.name}</td>
 				<td>${book.category.name}</td>
 				<td>${book.author}</td>
-				<td>${book.name}</td>
+				<td>${book.publisher.name}</td>
+				<td>${book.releasedAt}</td>
 				<td>${fn:length(book.copies)}</td>
 				<td><a href="/mywebbook/books/show?isbn=${book.isbn}">詳細</a></td>
 				<td><a href="/mywebbook/books/edit?isbn=${book.isbn}">編集</a></td>

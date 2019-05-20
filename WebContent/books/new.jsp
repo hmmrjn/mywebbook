@@ -41,6 +41,11 @@
 				</select> <a href="/mywebbook/book/publishers/new">新規</a></td>
 			</tr>
 			<tr>
+				<td>発売日</td>
+				<c:set var="dateName" value="releasedAt" />
+				<td><%@ include file="/common/datepicker.jsp"%></td>
+			</tr>
+			<tr>
 				<td>入荷数</td>
 				<td><input type="number" name="copiesNum" /></td>
 			</tr>

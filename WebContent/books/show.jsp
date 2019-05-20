@@ -33,6 +33,10 @@
 			<td>出版元</td>
 			<td>${book.publisher.name}</td>
 		</tr>
+		<tr>
+			<td>発売日</td>
+			<td>${book.releasedAt}</td>
+		</tr>
 	</table>
 
 	<p>この図書は${fn:length(book.copies)}冊あります。</p>

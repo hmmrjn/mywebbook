@@ -36,6 +36,12 @@
 						</c:forEach>
 				</select> <a href="/mywebbook/book/publishers/new">新規</a></td>
 			</tr>
+			<tr>
+				<td>発売日</td>
+				<c:set var="dateName" value="releasedAt" />
+				<c:set var="defaultDate" value="${book.releasedAt}" />
+				<td><%@ include file="/common/datepicker.jsp"%></td>
+			</tr>
 		</table>
 		<input type="hidden" name="isbn" value="${book.isbn}" /> <input
 			type="submit" value="送信" />

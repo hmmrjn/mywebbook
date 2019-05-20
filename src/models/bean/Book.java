@@ -1,6 +1,7 @@
 package models.bean;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 public class Book implements Serializable {
@@ -9,6 +10,7 @@ public class Book implements Serializable {
 	private Category category;
 	private String author;
 	private Publisher publisher;
+	private Date releasedAt;
 	private List<BookCopy> copies;
 
 	public String getIsbn() {
@@ -49,6 +51,14 @@ public class Book implements Serializable {
 
 	public void setPublisher(Publisher publisher) {
 		this.publisher = publisher;
+	}
+
+	public Date getReleasedAt() {
+		return releasedAt;
+	}
+
+	public void setReleasedAt(Date releasedAt) {
+		this.releasedAt = releasedAt;
 	}
 
 	public List<BookCopy> getCopies() {

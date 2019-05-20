@@ -1,7 +1,7 @@
 package controllers.books;
 
 import java.io.IOException;
-import java.util.List;
+import java.text.ParseException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,8 +12,6 @@ import javax.servlet.http.HttpSession;
 import controllers.Controller;
 import exceptions.NoResultException;
 import models.bean.Book;
-import models.bean.Category;
-import models.bean.Publisher;
 import models.dao.BookDao;
 
 @WebServlet("/books/edit")
@@ -25,11 +23,8 @@ public class BooksEdit extends Controller {
 		BookDao bookDao = new BookDao();
 		try {
 			Book book = bookDao.findByIsbn(isbn);
-			List<Category> categories = bookDao.findCategories();
-			List<Publisher> publishers = bookDao.findPublishers();
 			request.setAttribute("book", book);
-			request.setAttribute("categories", categories);
-			request.setAttribute("publishers", publishers);
+			setCategoriesAndPublishers(request, response);
 			request.getRequestDispatcher("/books/edit.jsp").forward(request, response);
 			// TODO jsp 脱selectbox化
 		} catch (NoResultException e) {
@@ -52,6 +47,10 @@ public class BooksEdit extends Controller {
 			session.setAttribute("message", "不正なIDです。");
 			setCategoriesAndPublishers(request, response);
 			request.getRequestDispatcher("/books/edit.jsp").forward(request, response);
+		} catch (ParseException e) {
+			session.setAttribute("message", "不正な日付です。");
+			setCategoriesAndPublishers(request, response);
+			request.getRequestDispatcher("/books/new.jsp").forward(request, response);
 		}
 	}
 
