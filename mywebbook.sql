@@ -1,6 +1,6 @@
 /*
- * ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹(webbook)ã¨
- * ãƒ¦ãƒ¼ã‚¶(webbookuser)ã®ä½œæˆ
+ * ƒf[ƒ^ƒx[ƒX(webbook)‚Æ
+ * ƒ†[ƒU(webbookuser)‚Ìì¬
  */
 DROP DATABASE IF EXISTS mywebbook;
 DROP USER IF EXISTS mywebbookuser;
@@ -8,7 +8,7 @@ CREATE USER mywebbookuser WITH PASSWORD 'himitu';
 CREATE DATABASE mywebbook OWNER mywebbookuser ENCODING 'UTF8';
 \c mywebbook
 
--- åˆ©ç”¨è€…ãƒ†ãƒ¼ãƒ–ãƒ«ã®ä½œæˆ
+-- —˜—pŽÒƒe[ƒuƒ‹‚Ìì¬
 CREATE TABLE member (
 	id SERIAL PRIMARY KEY,
 	family_name VARCHAR(10) NOT NULL,
@@ -19,47 +19,48 @@ CREATE TABLE member (
 	email VARCHAR(100) NOT NULL,
 	birthday DATE NOT NULL,
 	subscribed_at DATE NOT NULL,
-	unsubscribed_at DATE --è¿½åŠ 
+	unsubscribed_at DATE --’Ç‰Á
 );
 
--- åˆ†é¡žãƒ†ãƒ¼ãƒ–ãƒ«ã®ä½œæˆ
+-- •ª—Þƒe[ƒuƒ‹‚Ìì¬
 CREATE TABLE category (
 	id SERIAL PRIMARY KEY,
 	name VARCHAR(20) NOT NULL
 );
 
--- å‡ºç‰ˆç¤¾ãƒ†ãƒ¼ãƒ–ãƒ«ã®ä½œæˆ
+-- o”ÅŽÐƒe[ƒuƒ‹‚Ìì¬
 CREATE TABLE publisher (
 	id SERIAL PRIMARY KEY,
 	name VARCHAR(20) NOT NULL
 );
 
--- å…±é€šå›³æ›¸æƒ…å ±ãƒ†ãƒ¼ãƒ–ãƒ«ä½œæˆ
+-- ‹¤’Ê}‘î•ñƒe[ƒuƒ‹ì¬
 CREATE TABLE book_info (
-	isbn CHAR(13) PRIMARY KEY, --ISBNã‚’ã”å…¥åŠ›ã—ãŸã¨ãã«ä¿®æ­£ã—ãŸããªã‚‹ã‹ã‚‚çŸ¥ã‚Œãªã„ã®ã§ã‚„ã£ã±idã¯å¿…è¦ã‹ã‚‚ã€‚
-	category_id INTEGER NOT NULL REFERENCES category,
-	publisher_id INTEGER NOT NULL REFERENCES publisher,
+	isbn CHAR(13) PRIMARY KEY, --ISBN‚ð‚²“ü—Í‚µ‚½‚Æ‚«‚ÉC³‚µ‚½‚­‚È‚é‚©‚à’m‚ê‚È‚¢‚Ì‚Å‚â‚Á‚Ïid‚Í•K—v‚©‚àB
+	category_id INTEGER NOT NULL REFERENCES category, --Ží—Þ‚ª­‚È‚¢‚Ì‚Å‘I‚×‚é‚æ‚¤‚É‚µ‚Ä‚¨‚­‚Æ•Ö—˜B
+	publisher_id INTEGER NOT NULL REFERENCES publisher, --category_id‚Æ“¯—lB
 	name VARCHAR(100) NOT NULL,
-	author VARCHAR(20) NOT NULL
+	author VARCHAR(20) NOT NULL, --Ží—Þ‚ª‘½‚¢‚Ì‚ÅBean‚É‚·‚é•K—v‚ª‚È‚¢‚©‚ÈBˆêl“–‚½‚è‚Ì’˜‘”‚à­‚È‚¢‚µB
+	released_at DATE NOT NULL --•Ô‹pŠú“ú‚Ì”»’f‚É•K—v
 );
 
--- å›ºæœ‰å›³æ›¸æƒ…å ±ãƒ†ãƒ¼ãƒ–ãƒ«ã®ä½œæˆ
+-- ŒÅ—L}‘î•ñƒe[ƒuƒ‹‚Ìì¬
 CREATE TABLE book_copy (
 	id SERIAL PRIMARY KEY,
 	isbn CHAR(13) NOT NULL REFERENCES book_info
 );
 
--- è²¸å‡ºè¿”å´ãƒ†ãƒ¼ãƒ–ãƒ«ã®ä½œæˆ
+-- ‘Ýo•Ô‹pƒe[ƒuƒ‹‚Ìì¬
 CREATE TABLE rental (
 	book_copy_id INTEGER NOT NULL REFERENCES book_copy,
 	id SERIAL NOT NULL,
 	member_id INTEGER NOT NULL REFERENCES member,
 	rented_at DATE NOT NULL,
 	return_by DATE NOT NULL,
-	returned_at DATE --è¿½åŠ 
+	returned_at DATE --’Ç‰Á
 );
 
--- ãƒ†ãƒ¼ãƒ–ãƒ«ã®æ‰€æœ‰è€…è¨­å®š
+-- ƒe[ƒuƒ‹‚ÌŠ—LŽÒÝ’è
 ALTER TABLE member OWNER TO mywebbookuser;
 ALTER TABLE rental OWNER TO mywebbookuser;
 ALTER TABLE book_copy OWNER TO mywebbookuser;
@@ -67,55 +68,55 @@ ALTER TABLE book_info OWNER TO mywebbookuser;
 ALTER TABLE category OWNER TO mywebbookuser;
 ALTER TABLE publisher OWNER TO mywebbookuser;
 
--- åˆ©ç”¨è€…ãƒ†ãƒ¼ãƒ–ãƒ«ã®ã‚µãƒ³ãƒ—ãƒ«ãƒ‡ãƒ¼ã‚¿
-INSERT INTO member VALUES(1, 'é˜¿äº•', 'å¤ªéƒŽ', '1000000', 'æ±äº¬éƒ½', '090-1111-1111', 'ai@dd.co.jp', '1984-10-01', CURRENT_DATE);
-INSERT INTO member VALUES(2, 'ä¼Šç”°', 'æ¬¡éƒŽ', '1100000', 'åƒè‘‰çœŒ', '090-2222-2222', 'ida@dd.co.jp', '1954-10-2', CURRENT_DATE);
-INSERT INTO member VALUES(3, 'å®‡ç”°', 'ä¸‰éƒŽ', '1200000', 'æ»‹è³€çœŒ', '090-3333-3333', 'uda@dd.co.jp', '1939-10-3', CURRENT_DATE);
-INSERT INTO member VALUES(4, 'æ±Ÿå·', 'å››éƒŽ', '1300000', 'ä½è³€çœŒ', '090-4444-4444', 'egawa@dd.co.jp', '1948-10-4', CURRENT_DATE);
-INSERT INTO member VALUES(5, 'å²¡æœ¬', 'äº”éƒŽ', '1400000', 'åŸ¼çŽ‰çœŒ', '090-5555-5555', 'okamoto@dd.co.jp', '1972-10-5', CURRENT_DATE);
-INSERT INTO member VALUES(6, 'ç”²æ–', 'å¤ªéƒŽ', '1500000', 'å¾³å³¶çœŒ', '090-6666-6666', 'kai@dd.co.jp', '1971-10-6', CURRENT_DATE);
-INSERT INTO member VALUES(7, 'æœ¨ç”°', 'æ¬¡éƒŽ', '1600000', 'ç¾¤é¦¬çœŒ', '090-7777-7777', 'kida@dd.co.jp', '1970-3-7', CURRENT_DATE);
-INSERT INTO member VALUES(8, 'è‰å£', 'ä¸‰éƒŽ', '1700000', 'é«˜çŸ¥çœŒ', '090-8888-8888', 'kusakabe@dd.co.jp', '1966-5-8', CURRENT_DATE);
-INSERT INTO member VALUES(9, 'å‰£æŒ', 'å››éƒŽ', '1800000', 'ç§‹ç”°çœŒ', '090-9999-9999', 'kemmochi@dd.co.jp', '1961-10-9', CURRENT_DATE);
-INSERT INTO member VALUES(10, 'å°å®¤', 'äº”éƒŽ', '1900000', 'å²©æ‰‹çœŒ', '090-0000-0000', 'komuro@dd.co.jp', '1993-10-101', CURRENT_DATE);
+-- —˜—pŽÒƒe[ƒuƒ‹‚ÌƒTƒ“ƒvƒ‹ƒf[ƒ^
+INSERT INTO member VALUES(1, 'ˆ¢ˆä', '‘¾˜Y', '1000000', '“Œ‹ž“s', '090-1111-1111', 'ai@dd.co.jp', '1984-10-01', CURRENT_DATE);
+INSERT INTO member VALUES(2, 'ˆÉ“c', 'ŽŸ˜Y', '1100000', 'ç—tŒ§', '090-2222-2222', 'ida@dd.co.jp', '1954-10-2', CURRENT_DATE);
+INSERT INTO member VALUES(3, '‰F“c', 'ŽO˜Y', '1200000', 'Ž ‰êŒ§', '090-3333-3333', 'uda@dd.co.jp', '1939-10-3', CURRENT_DATE);
+INSERT INTO member VALUES(4, ']ì', 'Žl˜Y', '1300000', '²‰êŒ§', '090-4444-4444', 'egawa@dd.co.jp', '1948-10-4', CURRENT_DATE);
+INSERT INTO member VALUES(5, '‰ª–{', 'ŒÜ˜Y', '1400000', 'é‹ÊŒ§', '090-5555-5555', 'okamoto@dd.co.jp', '1972-10-5', CURRENT_DATE);
+INSERT INTO member VALUES(6, 'b”ã', '‘¾˜Y', '1500000', '“¿“‡Œ§', '090-6666-6666', 'kai@dd.co.jp', '1971-10-6', CURRENT_DATE);
+INSERT INTO member VALUES(7, '–Ø“c', 'ŽŸ˜Y', '1600000', 'ŒQ”nŒ§', '090-7777-7777', 'kida@dd.co.jp', '1970-3-7', CURRENT_DATE);
+INSERT INTO member VALUES(8, '‘•Ç', 'ŽO˜Y', '1700000', '‚’mŒ§', '090-8888-8888', 'kusakabe@dd.co.jp', '1966-5-8', CURRENT_DATE);
+INSERT INTO member VALUES(9, 'Œ•Ž', 'Žl˜Y', '1800000', 'H“cŒ§', '090-9999-9999', 'kemmochi@dd.co.jp', '1961-10-9', CURRENT_DATE);
+INSERT INTO member VALUES(10, '¬Žº', 'ŒÜ˜Y', '1900000', 'ŠâŽèŒ§', '090-0000-0000', 'komuro@dd.co.jp', '1993-10-10', CURRENT_DATE);
 
 SELECT setval('member_id_seq', (SELECT MAX(id) FROM member));
 
--- åˆ†é¡žãƒ†ãƒ¼ãƒ–ãƒ«ã®ã‚µãƒ³ãƒ—ãƒ«ãƒ‡ãƒ¼ã‚¿
-INSERT INTO category VALUES(0, 'æ–‡å­¦ãƒ»è©•è«–');
-INSERT INTO category VALUES(1, 'äººæ–‡ãƒ»æ€æƒ³');
-INSERT INTO category VALUES(2, 'ç¤¾ä¼šãƒ»æ”¿æ²»ãƒ»æ³•å¾‹');
-INSERT INTO category VALUES(3, 'æ­´å²ãƒ»åœ°ç†');
-INSERT INTO category VALUES(4, 'ç§‘å­¦ãƒ»ãƒ†ã‚¯ãƒŽãƒ­ã‚¸ãƒ¼');
-INSERT INTO category VALUES(5, 'åŒ»å­¦ãƒ»è–¬å­¦');
-INSERT INTO category VALUES(6, 'ã‚³ãƒ³ãƒ”ãƒ¥ãƒ¼ã‚¿ãƒ»ã‚¤ãƒ³ã‚¿ãƒ¼ãƒãƒƒãƒˆ');
-INSERT INTO category VALUES(7, 'æš®ã‚‰ã—ãƒ»å¥åº·ãƒ»å­è‚²ã¦');
+-- •ª—Þƒe[ƒuƒ‹‚ÌƒTƒ“ƒvƒ‹ƒf[ƒ^
+INSERT INTO category VALUES(0, '•¶ŠwE•]˜_');
+INSERT INTO category VALUES(1, 'l•¶EŽv‘z');
+INSERT INTO category VALUES(2, 'ŽÐ‰ïE­Ž¡E–@—¥');
+INSERT INTO category VALUES(3, '—ðŽjE’n—');
+INSERT INTO category VALUES(4, '‰ÈŠwEƒeƒNƒmƒƒW[');
+INSERT INTO category VALUES(5, 'ˆãŠwE–òŠw');
+INSERT INTO category VALUES(6, 'ƒRƒ“ƒsƒ…[ƒ^EƒCƒ“ƒ^[ƒlƒbƒg');
+INSERT INTO category VALUES(7, '•é‚ç‚µEŒ’NEŽqˆç‚Ä');
 
 SELECT setval('category_id_seq', (SELECT MAX(id) FROM category));
 
--- å‡ºç‰ˆç¤¾ãƒ†ãƒ¼ãƒ–ãƒ«ã®ã‚µãƒ³ãƒ—ãƒ«ãƒ‡ãƒ¼ã‚¿
-INSERT INTO publisher VALUES(0, 'Aå‡ºç‰ˆ');
-INSERT INTO publisher VALUES(1, 'Bå‡ºç‰ˆ');
-INSERT INTO publisher VALUES(2, 'Cå‡ºç‰ˆ');
-INSERT INTO publisher VALUES(3, 'Då‡ºç‰ˆ');
-INSERT INTO publisher VALUES(4, 'Eå‡ºç‰ˆ');
-INSERT INTO publisher VALUES(5, 'Få‡ºç‰ˆ');
+-- o”ÅŽÐƒe[ƒuƒ‹‚ÌƒTƒ“ƒvƒ‹ƒf[ƒ^
+INSERT INTO publisher VALUES(0, 'Ao”Å');
+INSERT INTO publisher VALUES(1, 'Bo”Å');
+INSERT INTO publisher VALUES(2, 'Co”Å');
+INSERT INTO publisher VALUES(3, 'Do”Å');
+INSERT INTO publisher VALUES(4, 'Eo”Å');
+INSERT INTO publisher VALUES(5, 'Fo”Å');
 
 SELECT setval('publisher_id_seq', (SELECT MAX(id) FROM publisher));
 
--- å…±é€šå›³æ›¸æƒ…å ±ãƒ†ãƒ¼ãƒ–ãƒ«ã®ã‚µãƒ³ãƒ—ãƒ«ãƒ‡ãƒ¼ã‚¿
-INSERT INTO book_info VALUES('kei000001', 0, 0, 'ç¨Žé‡‘ã¯ãªãœé«˜ã„ã®ã‹', 'ç¨Žåšå£«');
-INSERT INTO book_info VALUES('kei000002', 0, 0, 'é‡‘èžã®ã‹ã‚‰ãã‚Š', 'åˆ©æƒŸå“‰');
-INSERT INTO book_info VALUES('rek000001', 3, 0, 'æ—¥æœ¬ã®æ­´å²', 'è¶³åˆ©ä¿¡é•·');
-INSERT INTO book_info VALUES('rek000002', 3, 0, 'ç±³å›½ã®æ­´å²', 'ã‚°ãƒƒã‚·ãƒ¥');
-INSERT INTO book_info VALUES('com000001', 6, 0, 'ã‚ã‹ã‚Šã‚„ã™ã„Java', 'ç›Šç”°é™½ä¸€');
-INSERT INTO book_info VALUES('com000002', 6, 0, 'DBãƒªãƒ•ã‚¡ãƒ¬ãƒ³ã‚¹', 'æˆ¸å¡šä¿¡äºŒ');
-INSERT INTO book_info VALUES('bun000001', 2, 0, 'æˆ¦äº‰ã¨è©¦åˆ', 'ãƒˆãƒ«ãƒˆãƒ«');
-INSERT INTO book_info VALUES('bun000002', 2, 0, 'æ‘˜ã¿è³­ç½°', 'ãƒ‰ã‚¹ãƒˆã‚¢ã‚¤ã‚¹ã‚­ãƒ¼');
-INSERT INTO book_info VALUES('sei000001', 7, 0, 'çŒ«ã¨ä»²è‰¯ããªã‚‹ã«ã¯', 'çŒ«ç”°æµç¾Ž');
-INSERT INTO book_info VALUES('sei000002', 7, 0, 'ã‚‰ãã¡ã‚“ãƒ€ã‚¤ã‚¨ãƒƒãƒˆ', 'ç´°åŒºå¥ˆç•™ä»£');
+-- ‹¤’Ê}‘î•ñƒe[ƒuƒ‹‚ÌƒTƒ“ƒvƒ‹ƒf[ƒ^
+INSERT INTO book_info VALUES('kei000001', 0, 0, 'Å‹à‚Í‚È‚º‚‚¢‚Ì‚©', 'Å”ŽŽm', '1993-10-10');
+INSERT INTO book_info VALUES('kei000002', 0, 0, '‹à—Z‚Ì‚©‚ç‚­‚è', '—˜ˆÒÆ', '1993-10-10');
+INSERT INTO book_info VALUES('rek000001', 3, 0, '“ú–{‚Ì—ðŽj', '‘«—˜M’·', '1993-10-10');
+INSERT INTO book_info VALUES('rek000002', 3, 0, '•Ä‘‚Ì—ðŽj', 'ƒOƒbƒVƒ…', '1993-10-10');
+INSERT INTO book_info VALUES('com000001', 6, 0, '‚í‚©‚è‚â‚·‚¢Java', '‰v“c—zˆê', '2010-5-1');
+INSERT INTO book_info VALUES('com000002', 6, 0, 'DBƒŠƒtƒ@ƒŒƒ“ƒX', 'ŒË’ËM“ñ', '2010-5-1');
+INSERT INTO book_info VALUES('bun000001', 2, 0, 'í‘ˆ‚ÆŽŽ‡', 'ƒgƒ‹ƒgƒ‹', '2019-5-1');
+INSERT INTO book_info VALUES('bun000002', 2, 0, '“E‚Ý“q”±', 'ƒhƒXƒgƒAƒCƒXƒL[', '2019-5-1');
+INSERT INTO book_info VALUES('sei000001', 7, 0, '”L‚Æ’‡—Ç‚­‚È‚é‚É‚Í', '”L“cŒb”ü', '2019-5-1');
+INSERT INTO book_info VALUES('sei000002', 7, 0, '‚ç‚­‚¿‚ñƒ_ƒCƒGƒbƒg', '×‹æ“Þ—¯‘ã', '2019-5-1');
 
--- å…±é€šå›³æ›¸æƒ…å ±ãƒ†ãƒ¼ãƒ–ãƒ«ã®ã‚µãƒ³ãƒ—ãƒ«ãƒ‡ãƒ¼ã‚¿
+-- ‹¤’Ê}‘î•ñƒe[ƒuƒ‹‚ÌƒTƒ“ƒvƒ‹ƒf[ƒ^
 INSERT INTO book_copy (isbn) VALUES('kei000001');
 INSERT INTO book_copy (isbn) VALUES('kei000001');
 INSERT INTO book_copy (isbn) VALUES('kei000001');
