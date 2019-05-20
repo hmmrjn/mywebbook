@@ -10,7 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import models.bean.Category;
 import models.bean.Publisher;
-import models.dao.BookDao;
+import models.dao.CategoryDao;
+import models.dao.PublisherDao;
 
 public abstract class Controller extends HttpServlet {
 
@@ -36,9 +37,10 @@ public abstract class Controller extends HttpServlet {
 
 	protected void setCategoriesAndPublishers(HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
-		BookDao bookDao = new BookDao();
-		List<Category> categories = bookDao.findCategories();
-		List<Publisher> publishers = bookDao.findPublishers();
+		CategoryDao categoryDao = new CategoryDao();
+		PublisherDao publisherDao = new PublisherDao();
+		List<Category> categories = categoryDao.findAll();
+		List<Publisher> publishers = publisherDao.findAll();
 		request.setAttribute("categories", categories);
 		request.setAttribute("publishers", publishers);
 	}

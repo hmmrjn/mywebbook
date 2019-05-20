@@ -61,48 +61,6 @@ public class BookDao extends Dao {
 		}
 	}
 
-	// TODO move to CategoryDao
-	public List<Category> findCategories() {
-		String sql = "SELECT * FROM category ORDER BY id";
-		List<Category> categories = new ArrayList<Category>();
-		try {
-
-			PreparedStatement stmt = conn.prepareStatement(sql);
-			ResultSet rs = stmt.executeQuery();
-			while (rs.next()) {
-				Category category = new Category();
-				category.setId(rs.getInt("id"));
-				category.setName(rs.getString("name"));
-				categories.add(category);
-			}
-			stmt.close();
-			rs.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return categories;
-	}
-
-	public List<Publisher> findPublishers() {
-		String sql = "SELECT * FROM publisher ORDER BY id";
-		List<Publisher> publishers = new ArrayList<Publisher>();
-		try {
-			PreparedStatement stmt = conn.prepareStatement(sql);
-			ResultSet rs = stmt.executeQuery();
-			while (rs.next()) {
-				Publisher publisher = new Publisher();
-				publisher.setId(rs.getInt("id"));
-				publisher.setName(rs.getString("name"));
-				publishers.add(publisher);
-			}
-			stmt.close();
-			rs.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return publishers;
-	}
-
 	public void create(Book book, int copiesNum) {
 		String sql = "INSERT INTO book_info (isbn, category_id, publisher_id, name, author, released_at) VALUES (?, ?, ?, ?, ?, ?)";
 		try {
