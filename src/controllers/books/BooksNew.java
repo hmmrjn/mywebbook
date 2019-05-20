@@ -28,6 +28,7 @@ public class BooksNew extends Controller {
 		BookDao bookDao = new BookDao();
 		HttpSession session = request.getSession();
 		try {
+			//TODO IBSN は 重複していないか?
 			Book book = bookDao.buildBookWithoutCopies(request);
 			int copiesNum = Integer.parseInt(request.getParameter("copiesNum"));
 			bookDao.create(book, copiesNum);

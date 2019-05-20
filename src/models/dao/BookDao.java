@@ -74,6 +74,7 @@ public class BookDao extends Dao {
 			stmt.executeUpdate();
 			BookCopy bookCopy = new BookCopy();
 			bookCopy.setIsbn(book.getIsbn());
+			bookCopy.setCreatedAt(new Date());
 			for (int i = 0; i < copiesNum; i++) {
 				bookCopyDao.create(bookCopy);
 			}

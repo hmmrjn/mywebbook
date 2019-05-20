@@ -51,7 +51,7 @@
 			</tr>
 			<tr>
 				<td>入荷数</td>
-				<td><input type="number" name="copiesNum" /></td>
+				<td><input type="number" name="copiesNum" value="1" required/></td>
 			</tr>
 		</table>
 		<input type="submit" value="登録" />
