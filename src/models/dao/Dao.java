@@ -7,10 +7,12 @@ import java.util.ResourceBundle;
 
 public class Dao {
 
-	Connection conn;
+	static Connection conn;
 
 	public Dao() {
-		conn = getConection();
+		if (conn == null) {
+			conn = getConection();
+		}
 	}
 
 	public Connection getConection() {
