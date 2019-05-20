@@ -51,7 +51,7 @@
 			<tr>
 				<td>${s.count}</td>
 				<td>${copy.id}</td>
-				<td><a href="books/copies/delete?id=${copy.id}">破棄</a></td>
+				<td><a href="/mywebbook/bookcopies/discard?id=${copy.id}">破棄</a></td>
 			</tr>
 		</c:forEach>
 	</table>

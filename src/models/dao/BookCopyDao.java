@@ -66,4 +66,16 @@ public class BookCopyDao extends Dao {
 		}
 	}
 
+	public void delete(int id) {
+		String sql = "DELETE FROM book_copy WHERE id = ?";
+		try {
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, id);
+			stmt.executeUpdate();
+			stmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
 }

@@ -3,8 +3,8 @@ package models.logic;
 import java.util.Date;
 
 import exceptions.BadParamsException;
-import exceptions.MemberHasNotReturnedBooksException;
 import exceptions.NoResultException;
+import exceptions.ValidationException;
 import models.bean.Member;
 import models.dao.MemberDao;
 import models.dao.RentalDao;
@@ -13,7 +13,7 @@ public class MemberLogic {
 	MemberDao memberDao = new MemberDao();
 	RentalDao rentalDao = new RentalDao();
 
-	public void unsubscribe(int id) throws BadParamsException, MemberHasNotReturnedBooksException {
+	public void unsubscribe(int id) throws BadParamsException, ValidationException {
 		try {
 			// memberId は 存在するか?
 			Member member = memberDao.findById(id);
@@ -28,7 +28,7 @@ public class MemberLogic {
 				memberDao.update(member);
 				return;
 			}
-			throw new MemberHasNotReturnedBooksException("この会員は未返却の図書があるので退会できません。");
+			throw new ValidationException("この会員は未返却の図書があるので退会できません。");
 		} catch (NoResultException e1) {
 			throw new BadParamsException("会員ID(" + id + ")は存在しません。");
 		}

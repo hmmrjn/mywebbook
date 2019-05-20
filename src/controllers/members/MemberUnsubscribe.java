@@ -10,7 +10,7 @@ import javax.servlet.http.HttpSession;
 
 import controllers.Controller;
 import exceptions.BadParamsException;
-import exceptions.MemberHasNotReturnedBooksException;
+import exceptions.ValidationException;
 import models.logic.MemberLogic;
 
 /**
@@ -29,7 +29,7 @@ public class MemberUnsubscribe extends Controller {
 			session.setAttribute("message", "退会させました。"); // TODO 退会取り消し。
 		} catch (BadParamsException e) {
 			session.setAttribute("message", e.getMessage());
-		} catch (MemberHasNotReturnedBooksException e) {
+		} catch (ValidationException e) {
 			session.setAttribute("message", e.getMessage());
 		} finally {
 			response.sendRedirect("/mywebbook/members");

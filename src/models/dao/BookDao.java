@@ -101,8 +101,6 @@ public class BookDao extends Dao {
 		}
 	}
 
-	// TODO add delete
-
 	public Book buildBookWithoutCopies(HttpServletRequest request) throws NoResultException, ParseException {
 		try {
 			request.setCharacterEncoding("UTF-8");
