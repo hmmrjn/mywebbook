@@ -23,18 +23,22 @@ public class RentalLogic {
 	RentalDao rentalDao = new RentalDao();
 
 	public void rent(int memberId, int bookCopyId) throws ValidationException {
-		if (isRentedNow(bookCopyId)) {
-			throw new ValidationException("資料IDが間違っています。この資料はただいま別の人に借りられているはずです。");
-		}
-
-		List<Rental> rentals = rentalDao.findNotReturnedByMemberId(memberId);
-		if (rentals.size() >= 5) {
-			throw new ValidationException("これ以上借りられません。この会員はすでに5冊借りています。");
-		}
-
-		Rental rental = new Rental();
 		try {
 			BookCopy bookCopy = bookCopyDao.findById(bookCopyId);
+			if (bookCopy.getDiscardedAt() != null) {
+				throw new ValidationException("資料IDが間違っています。この資料は破棄されています。");
+			}
+
+			if (isRentedNow(bookCopyId)) {
+				throw new ValidationException("資料IDが間違っています。この資料はただいま別の人に借出し中です。");
+			}
+
+			List<Rental> rentals = rentalDao.findNotReturnedByMemberId(memberId);
+			if (rentals.size() >= 5) {
+				throw new ValidationException("これ以上借りられません。この会員はすでに5冊借りています。");
+			}
+
+			Rental rental = new Rental();
 			Member member = memberDao.findById(memberId);
 			Book book = bookDao.findByIsbn(bookCopy.getIsbn());
 
@@ -51,7 +55,6 @@ public class RentalLogic {
 		} catch (NoResultException e) {
 			throw new ValidationException("資料ID、または、会員IDが存在しません。");
 		}
-
 	}
 
 	/**
